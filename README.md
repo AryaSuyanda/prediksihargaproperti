@@ -57,3 +57,238 @@ Berikut adalah daftar variabel (kolom) yang ada pada dataset awal:
 | `GRS`      | `garasi_mobil`       | Kapasitas garasi (jumlah mobil)                  | `int64`        | Fitur prediktor                                 |
 
 **Output dan Penjelasan (dari code Python):**
+
+![image](https://github.com/user-attachments/assets/6f8c6f4b-7750-4caa-b4ff-1717ad684147)
+
+**Penjelasan Output:**
+* **`Data berhasil dimuat.`**: Menunjukkan bahwa file data berhasil dibaca.
+* **`Data Awal (5 baris pertama):`**: Menampilkan lima baris pertama data mentah, memperlihatkan kolom asli.
+* **`Informasi Data Awal:`**: Ringkasan struktur `DataFrame`: ada 1010 baris dan 8 kolom. Sebagian besar kolom bertipe `int64` (numerik), dan 'NAMA RUMAH' bertipe `object` (string). Tidak ada nilai yang hilang.
+* **`Bentuk DataFrame Awal: (1010, 8)`**: Mengkonfirmasi dimensi `DataFrame`: 1010 baris dan 8 kolom.
+
+### Statistik Deskriptif
+
+Berikut adalah ringkasan statistik deskriptif untuk fitur-fitur numerik dalam dataset bersih:
+
+| Statistik | harga_rp (Miliar Rp) | luas_tanah_m2 | luas_bangunan_m2 | kamar_tidur | kamar_mandi | garasi_mobil |
+| :-------- | :------------------- | :------------ | :--------------- | :---------- | :---------- | :----------- |
+| **count** | 1010                 | 1010          | 1010             | 1010        | 1010        | 1010         |
+| **mean** | 7.63                 | 276.54        | 237.43           | 4.67        | 3.61        | 1.92         |
+| **std** | 7.34                 | 177.86        | 179.96           | 1.57        | 1.42        | 1.51         |
+| **min** | 0.43                 | 40.00         | 25.00            | 2.00        | 1.00        | 0.00         |
+| **25%** | 3.26                 | 150.00        | 130.00           | 4.00        | 3.00        | 1.00         |
+| **50%** | 5.00                 | 216.50        | 165.00           | 4.00        | 3.00        | 2.00         |
+| **75%** | 9.00                 | 350.00        | 290.00           | 5.00        | 4.00        | 2.00         |
+| **max** | 65.00                | 1126.00       | 1400.00          | 10.00       | 10.00       | 10.00        |
+
+**Penjelasan Output Statistik Deskriptif:**
+* Kolom `harga_rp` memiliki rentang nilai yang sangat luas ($4.3 \times 10^8$ hingga $6.5 \times 10^{10}$) dengan standar deviasi yang tinggi ($7.3 \times 10^9$), menunjukkan variasi harga yang signifikan.
+* Luas tanah rata-rata sekitar 276 m$^2$ dan luas bangunan rata-rata 237 m$^2$.
+
+**Visualisasi Distribusi Fitur Numerik dan Identifikasi Outlier:**
+![Distribusi Fitur Numerik dan Box Plot](images/distribusi_fitur_numerik.png)
+**Penjelasan Gambar:**
+* **Histogram (atas):** Menunjukkan distribusi setiap fitur numerik. Terlihat `harga_rp`, `luas_tanah_m2`, dan `luas_bangunan_m2` cenderung memiliki distribusi yang miring ke kanan (positively skewed), mengindikasikan keberadaan beberapa nilai ekstrem (harga/luas yang sangat tinggi).
+* **Box Plot (bawah):** Digunakan untuk mengidentifikasi *outlier*. Titik-titik di luar "jangkauan kumis" menunjukkan *outlier*. Terlihat jelas adanya *outlier* pada `harga_rp` dan `luas_bangunan_m2`, yang mengkonfirmasi adanya properti dengan harga atau luas yang sangat berbeda dari mayoritas data.
+
+### Heatmap Korelasi Antar Fitur
+
+![Heatmap Korelasi Antar Fitur](images/heatmap_korelasi.png)
+**Penjelasan Gambar:**
+* Heatmap ini menunjukkan koefisien korelasi Pearson antara setiap pasangan fitur. Warna merah/oranye menunjukkan korelasi positif yang kuat, biru menunjukkan korelasi negatif, dan putih/abu-abu menunjukkan korelasi lemah.
+* `harga_juta` (variabel target) memiliki korelasi positif yang sangat kuat dengan `luas_bangunan_m2` (0.81) dan `luas_tanah_m2` (0.75), menunjukkan bahwa kedua fitur ini adalah prediktor harga yang paling dominan.
+* Ada juga korelasi positif antara fitur-fitur prediktor itu sendiri, seperti `luas_tanah_m2` dan `luas_bangunan_m2` (0.74), yang wajar dalam konteks properti.
+
+## Data Preparation
+
+Tahapan persiapan data dilakukan untuk mengubah data mentah menjadi format yang sesuai untuk pemodelan *machine learning*. Urutan teknik yang digunakan adalah sebagai berikut:
+
+1.  **Membuat Salinan DataFrame:**
+    * **Kode:** `df = df_raw.copy()`
+    * **Alasan:** Ini dilakukan untuk memastikan bahwa operasi pra-pemrosesan tidak memengaruhi DataFrame asli (`df_raw`), menjaga integritas data mentah.
+
+2.  **Mengubah Nama Kolom (Renaming Columns):**
+    * **Kode:**
+        ```python
+        df.columns = ['no', 'nama_properti','harga_rp', 'luas_tanah_m2', 'luas_bangunan_m2', 'kamar_tidur', 'kamar_mandi', 'garasi_mobil']
+        ```
+    * **Alasan:** Nama kolom asli (misalnya, 'LB', 'LT', 'GRS') seringkali tidak deskriptif atau konsisten. Mengubah nama kolom menjadi format yang lebih jelas dan konsisten (`luas_bangunan_m2`, `luas_tanah_m2`, `garasi_mobil`) meningkatkan keterbacaan kode dan pemahaman data.
+
+    **Output (dari code Python):**
+    ```
+    Data setelah rename kolom (5 baris pertama): 
+       no                                      nama_properti    harga_rp  luas_tanah_m2  luas_bangunan_m2  kamar_tidur  kamar_mandi  garasi_mobil 
+    0   1  Rumah Murah Hook Tebet Timur, Tebet, Jakarta S...  3800000000            220               220            3            3             0 
+    1   2  Rumah Modern di Tebet dekat Stasiun, Tebet, Ja...  4600000000  180  137   4   3    2 
+    2   3  Rumah Mewah 2 Lantai Hanya 3 Menit Ke Tebet, T...  3000000000  267  250   4   4    4 
+    3   4           Rumah Baru Tebet, Tebet, Jakarta Selatan   430000000             40                25            2            2             0 
+    4   5  Rumah Bagus Tebet komp Gudang Peluru lt 350m, ...  9000000000  400  355   6   5    3 
+    ```
+
+3.  **Menghapus Kolom yang Tidak Relevan:**
+    * **Kode:**
+        ```python
+        df = df.drop('no', axis=1)
+        df = df.drop('nama_properti', axis=1)
+        ```
+    * **Alasan:** Kolom `no` adalah *identifier* unik yang tidak memiliki nilai prediktif. Kolom `nama_properti` berisi teks bebas yang memerlukan *Natural Language Processing* (NLP) yang lebih kompleks untuk diekstrak fiturnya, dan untuk proyek ini, dianggap tidak relevan secara langsung sebagai fitur numerik. Menghapus kolom ini mengurangi dimensi data dan fokus pada fitur-fitur struktural properti.
+
+    **Output (dari code Python):**
+    ```
+    Data setelah menghapus kolom 'no' dan 'nama_properti' (5 baris pertama): 
+         harga_rp  luas_tanah_m2  luas_bangunan_m2  kamar_tidur  kamar_mandi  garasi_mobil 
+    0  3800000000            220               220            3            3             0 
+    1  4600000000            180               137            4            3             2 
+    2  3000000000            267               250            4            4             4 
+    3   430000000             40                25            2            2             0 
+    4  9000000000            400               355            6            5             3 
+    ```
+
+4.  **Penanganan Missing Value (Imputasi Median):**
+    * **Kode:**
+        ```python
+        import numpy as np
+        for col in df.select_dtypes(include=np.number).columns: 
+            if df[col].isna().any(): 
+                df[col] = df[col].fillna(df[col].median())
+        ```
+    * **Alasan:** Meskipun output menunjukkan tidak ada *missing values* pada dataset awal, langkah ini tetap penting sebagai praktik standar. Jika di masa depan ada data yang hilang, *missing values* pada kolom numerik akan diisi dengan nilai median kolom tersebut. Penggunaan median lebih robust terhadap *outlier* dibandingkan mean.
+
+    **Output (dari code Python):**
+    ```
+    Jumlah Missing Value per Kolom Sebelum Penanganan: 
+    harga_rp            0 
+    luas_tanah_m2       0 
+    luas_bangunan_m2    0 
+    kamar_tidur         0 
+    kamar_mandi         0 
+    garasi_mobil        0 
+    dtype: int64 
+
+    Jumlah Missing Value per Kolom Setelah Penanganan (Median Imputation): 
+    harga_rp            0 
+    luas_tanah_m2       0 
+    luas_bangunan_m2    0 
+    kamar_tidur         0 
+    kamar_mandi         0 
+    garasi_mobil        0 
+    dtype: int64 
+    ```
+
+5.  **Feature Engineering:**
+    * **Kode:**
+        ```python
+        df['harga_juta'] = df['harga_rp'] / 1_000_000
+        df = df.drop('harga_rp', axis=1)
+
+        # Kategorisasi luas_tanah_m2 (contoh bins: 0-100, 101-300, >300)
+        import pandas as pd # Tambahkan import pandas jika belum ada
+        bins = [0, 100, 300, df['luas_tanah_m2'].max()]
+        labels = [0, 1, 2] # Menggunakan label numerik untuk kategori
+        df['kategori_luas_tanah'] = pd.cut(df['luas_tanah_m2'], bins=bins, labels=labels, include_lowest=True).astype(int)
+        ```
+    * **Alasan:**
+        * `harga_juta`: Mengubah skala target variabel dari Rupiah penuh ke juta Rupiah (`harga_juta = harga_rp / 1_000_000`). Ini membuat nilai target lebih mudah diinterpretasikan dan mungkin membantu beberapa algoritma optimasi.
+        * `kategori_luas_tanah`: Membuat fitur kategorikal baru dari `luas_tanah_m2`. Meskipun `luas_tanah_m2` sudah numerik, kadang-kadang mengkategorikan fitur kontinu dapat membantu model menangkap pola non-linier atau perbedaan signifikan antar kelompok. Misalnya, rumah dengan luas tanah "kecil", "sedang", dan "besar" mungkin memiliki dinamika harga yang berbeda.
+
+    **Output (dari code Python):**
+    ```
+    Data setelah Feature Engineering (5 baris pertama): 
+       luas_tanah_m2  luas_bangunan_m2  kamar_tidur  kamar_mandi  garasi_mobil  harga_juta  kategori_luas_tanah 
+    0            220               220            3            3             0      3800.0                    2 
+    1            180               137            4            3             2      4600.0                    1 
+    2            267               250            4            4             4      3000.0                    2 
+    3             40                25            2            2             0       430.0                    0 
+    4            400               355            6            5             3      9000.0                    2 
+    <class 'pandas.core.frame.DataFrame'> 
+    RangeIndex: 1010 entries, 0 to 1009 
+    Data columns (total 7 columns): 
+     #   Column               Non-Null Count  Dtype  
+    ---  ------               --------------  -----  
+    0   luas_tanah_m2        1010 non-null   int64  
+    1   luas_bangunan_m2     1010 non-null   int64  
+    2   kamar_tidur          1010 non-null   int64  
+    3   kamar_mandi          1010 non-null   int64  
+    4   garasi_mobil         1010 non-null   int64  
+    5   harga_juta           1010 non-null   float64 
+    6   kategori_luas_tanah  1010 non-null   int64  
+    dtypes: float64(1), int64(6) 
+    memory usage: 55.4 KB 
+    ```
+
+6.  **Pembagian Data (Train-Test Split):**
+    * **Kode:**
+        ```python
+        from sklearn.model_selection import train_test_split # Tambahkan import jika belum ada
+        X = df.drop('harga_juta', axis=1)
+        y = df['harga_juta']
+        x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        ```
+    * **Alasan:** Data dibagi menjadi set pelatihan (80%) dan set pengujian (20%). Set pelatihan digunakan untuk melatih model, sedangkan set pengujian digunakan untuk mengevaluasi kinerja model pada data yang belum pernah dilihat, memberikan estimasi yang lebih realistis tentang bagaimana model akan bekerja di dunia nyata. `random_state` memastikan pembagian yang konsisten.
+
+7.  **Penskalaan Fitur (Feature Scaling):**
+    * **Kode:**
+        ```python
+        from sklearn.preprocessing import StandardScaler # Tambahkan import jika belum ada
+        scaler = StandardScaler()
+        x_train_scaled = scaler.fit_transform(x_train)
+        x_test_scaled = scaler.transform(x_test)
+        ```
+    * **Alasan:** Fitur-fitur seperti `luas_tanah_m2` dan `luas_bangunan_m2` memiliki rentang nilai yang sangat berbeda dibandingkan `kamar_tidur` atau `garasi_mobil`. Penskalaan fitur menggunakan `StandardScaler` (menormalkan data sehingga memiliki rata-rata 0 dan standar deviasi 1) penting untuk beberapa algoritma *machine learning*. Meskipun XGBoost kurang sensitif terhadap skala fitur dibandingkan model berbasis jarak (seperti SVM atau K-NN), penskalaan dapat tetap memberikan stabilitas dan kadang-kadang sedikit peningkatan kinerja.
+
+    **Output (dari code Python):**
+    ```
+    Fitur yang Digunakan (X): 
+    ['luas_tanah_m2', 'luas_bangunan_m2', 'kamar_tidur', 'kamar_mandi', 'garasi_mobil', 'kategori_luas_tanah'] 
+
+    Target (y): 
+    harga_juta 
+
+    Data Fitur (X) setelah scaling (5 baris pertama): 
+       luas_tanah_m2  luas_bangunan_m2  kamar_tidur  kamar_mandi  garasi_mobil  kategori_luas_tanah 
+    0      -0.318038         -0.096919    -1.061272    -0.428305     -1.271837             0.905083 
+    1      -0.543039         -0.558367    -0.425139    -0.428305      0.052447            -0.297725 
+    2      -0.053661          0.069870    -0.425139     0.276236      1.376731             0.905083 
+    3      -1.330545         -1.181044    -1.697406    -1.132847     -1.271837            -1.500532 
+    4       0.694470          0.653629     0.847128     0.980778      0.714589             0.905083 
+
+    Ukuran x_train: (808, 6), x_test: (202, 6) 
+    Ukuran y_train: (808,), y_test: (202,) 
+    ```
+
+## Modeling
+
+Tahapan pemodelan ini menggunakan algoritma **XGBoost (Extreme Gradient Boosting)** untuk tugas regresi. XGBoost dipilih karena dikenal sebagai algoritma yang kuat dan efisien untuk membangun model prediktif yang akurat, terutama dalam kasus data terstruktur.
+
+**Algoritma yang Digunakan: XGBoost Regressor**
+
+XGBoost adalah implementasi dari algoritma *gradient boosting machine* yang dioptimalkan. Algoritma ini membangun serangkaian pohon keputusan secara sekuensial. Setiap pohon baru mencoba mengoreksi kesalahan yang dibuat oleh pohon sebelumnya.
+
+* **Kelebihan XGBoost:**
+    * **Performa Tinggi:** Sering memenangkan kompetisi *machine learning* berkat akurasinya yang tinggi.
+    * **Fleksibilitas:** Dapat menangani berbagai jenis data dan masalah (klasifikasi, regresi, peringkat).
+    * **Regularisasi:** Memiliki mekanisme regularisasi (`L1` dan `L2`) untuk mencegah *overfitting*.
+    * **Penanganan *Missing Values*:** Dapat secara otomatis menangani nilai yang hilang.
+    * **Paralelisasi:** Dapat berjalan secara paralel, mempercepat proses pelatihan.
+
+* **Kekurangan XGBoost:**
+    * **Interpretasi:** Model akhir, yang merupakan ensemble dari banyak pohon, bisa sulit diinterpretasikan dibandingkan model tunggal.
+    * **Memori:** Membutuhkan memori yang cukup besar saat memproses dataset yang sangat besar.
+    * **Hyperparameter Tuning:** Memiliki banyak *hyperparameter* yang perlu disetel, yang bisa memakan waktu.
+
+**Proses Improvement Model: Hyperparameter Tuning dengan GridSearchCV**
+
+Untuk mendapatkan model XGBoost terbaik, kami melakukan penyetelan *hyperparameter* (hyperparameter tuning) menggunakan `GridSearchCV`.
+
+* **Tujuan:** Mencari kombinasi optimal dari *hyperparameter* yang memberikan kinerja terbaik pada data validasi.
+* **Metode:** `GridSearchCV` melakukan pencarian secara menyeluruh di seluruh *grid* nilai *hyperparameter* yang ditentukan. Untuk setiap kombinasi, model dilatih menggunakan *cross-validation* (3 *folds*) dan diuji pada metrik evaluasi yang ditentukan (dalam hal ini, `neg_mean_squared_error`).
+
+* **Parameter yang Disesuaikan:**
+    * `n_estimators`: Jumlah pohon keputusan yang akan dibangun (antara 50 hingga 200).
+    * `learning_rate`: Ukuran langkah *boosting* (seberapa besar setiap pohon baru berkontribusi).
+    * `max_depth`: Kedalaman maksimum setiap pohon.
+    * `subsample`: Fraksi sampel yang digunakan untuk melatih setiap pohon (untuk mengurangi *overfitting*).
+    * `colsample_bytree`: Fraksi fitur yang digunakan untuk melatih setiap setiap pohon (untuk mengurangi *overfitting*).
+
+**Output (dari code Python):**
+
