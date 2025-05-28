@@ -1,4 +1,16 @@
-Tentu, saya akan tambahkan bagian referensi di akhir laporan, sesuai format yang Anda minta. Saya akan menggunakan format sitasi umum yang relevan untuk konteks ini.
+Baik, saya mengerti. Saya akan meninjau ulang laporan dan mengidentifikasi bagian-bagian yang lebih cocok disajikan dalam bentuk tabel untuk kerapian dan keterbacaan yang lebih baik.
+
+Berdasarkan laporan sebelumnya, ada beberapa bagian yang akan sangat terbantu dengan format tabel:
+
+1.  **Variabel-variabel pada Dataset:** Ini bisa ditabelkan untuk memberikan ringkasan yang jelas tentang setiap kolom.
+2.  **Statistik Deskriptif Data Bersih:** Data statistik ini ideal untuk disajikan dalam tabel.
+3.  **Evaluasi Model pada Data Training dan Testing:** Metrik evaluasi sangat cocok disajikan dalam tabel perbandingan.
+4.  **Contoh Hasil Prediksi pada Data Test:** Ini sudah dalam bentuk tabel sebagian, tetapi akan saya pastikan format Markdown-nya benar untuk tabel.
+5.  **Pentingnya Fitur (Feature Importance):** Meskipun ada bar plot, menyajikannya dalam tabel juga dapat memberikan data numerik yang jelas.
+
+Saya akan mengintegrasikan tabel-tabel ini ke dalam laporan. Untuk gambar, saya akan mempertahankan format `![Alt text](images/filename.png)` dengan asumsi Anda memiliki folder `images` di root repositori Anda.
+
+Berikut adalah revisi lengkap `README.md` dengan penambahan tabel:
 
 ```markdown
 # Laporan Proyek Machine Learning - [Nama Anda]
@@ -43,16 +55,20 @@ Untuk mencapai tujuan-tujuan di atas, kami mengajukan solusi berikut:
 ## Data Understanding
 Data yang digunakan dalam proyek ini adalah kumpulan data properti yang berisi informasi tentang karakteristik rumah dan harganya. Data ini dimuat dari file Excel bernama `DATA RUMAH.xlsx`. Asumsi, data ini adalah data historis properti dari area tertentu (misalnya, Jakarta Selatan, berdasarkan contoh nama rumah).
 
-### Variabel-variabel pada dataset adalah sebagai berikut:
+### Variabel-variabel pada Dataset
 
-* **`NO`**: Nomor urut atau identifikasi unik untuk setiap properti. (Dihapus dalam pra-pemrosesan)
-* **`NAMA RUMAH`**: Deskripsi tekstual dari properti, termasuk lokasi dan fitur singkat. (Dihapus dalam pra-pemrosesan)
-* **`HARGA` (setelah rename menjadi `harga_rp`)**: Harga jual properti dalam Rupiah (sebelum dibagi menjadi juta Rupiah). Ini adalah variabel target (dependen) yang akan diprediksi.
-* **`LB` (setelah rename menjadi `luas_bangunan_m2`)**: Luas bangunan properti dalam meter persegi (m$^2$).
-* **`LT` (setelah rename menjadi `luas_tanah_m2`)**: Luas tanah properti dalam meter persegi (m$^2$).
-* **`KT` (setelah rename menjadi `kamar_tidur`)**: Jumlah kamar tidur dalam properti.
-* **`KM` (setelah rename menjadi `kamar_mandi`)**: Jumlah kamar mandi dalam properti.
-* **`GRS` (setelah rename menjadi `garasi_mobil`)**: Kapasitas garasi dalam jumlah mobil.
+Berikut adalah daftar variabel (kolom) yang ada pada dataset awal:
+
+| Kolom Asli | Kolom Setelah Rename | Deskripsi                                        | Tipe Data Awal | Catatan Pra-pemrosesan                          |
+| :--------- | :------------------- | :----------------------------------------------- | :------------- | :---------------------------------------------- |
+| `NO`       | `no`                 | Nomor urut/identifikasi unik properti            | `int64`        | Dihapus karena tidak relevan sebagai fitur      |
+| `NAMA RUMAH` | `nama_properti`      | Deskripsi tekstual properti (lokasi, fitur singkat) | `object`       | Dihapus karena tidak relevan sebagai fitur numerik |
+| `HARGA`    | `harga_rp`           | Harga jual properti dalam Rupiah                 | `int64`        | Target variabel; dikonversi ke `harga_juta`     |
+| `LB`       | `luas_bangunan_m2`   | Luas bangunan properti (m$^2$)                   | `int64`        | Fitur prediktor                                 |
+| `LT`       | `luas_tanah_m2`      | Luas tanah properti (m$^2$)                      | `int64`        | Fitur prediktor                                 |
+| `KT`       | `kamar_tidur`        | Jumlah kamar tidur                               | `int64`        | Fitur prediktor                                 |
+| `KM`       | `kamar_mandi`        | Jumlah kamar mandi                               | `int64`        | Fitur prediktor                                 |
+| `GRS`      | `garasi_mobil`       | Kapasitas garasi (jumlah mobil)                  | `int64`        | Fitur prediktor                                 |
 
 **Output dan Penjelasan:**
 
@@ -68,7 +84,7 @@ Data Awal (5 baris pertama):
 4   5  Rumah Bagus Tebet komp Gudang Peluru lt 350m, ...  9000000000  400  355   6   5    3 
 
 Informasi Data Awal: 
-<class 'pandas.core.frame.DataFrame>::<class 'pandas.core.frame.DataFrame'>
+<class 'pandas.core.frame.DataFrame'> 
 RangeIndex: 1010 entries, 0 to 1009 
 Data columns (total 8 columns): 
  #   Column      Non-Null Count  Dtype  
@@ -87,37 +103,39 @@ memory usage: 63.3+ KB
 Bentuk DataFrame Awal: (1010, 8) 
 ```
 **Penjelasan Output:**
-* **`Data berhasil dimuat.`**: Menunjukkan bahwa file data (kemungkinan `DATA RUMAH.xlsx`) berhasil dibaca.
-* **`Data Awal (5 baris pertama):`**: Menampilkan lima baris pertama data mentah, memperlihatkan kolom asli seperti 'NO', 'NAMA RUMAH', 'HARGA', 'LB', 'LT', 'KT', 'KM', 'GRS'.
-* **`Informasi Data Awal:`**: Ringkasan struktur DataFrame: ada 1010 baris dan 8 kolom. Sebagian besar kolom bertipe `int64` (numerik), dan 'NAMA RUMAH' bertipe `object` (string). Tidak ada nilai yang hilang (`Non-Null Count` sama dengan total entri).
+* **`Data berhasil dimuat.`**: Menunjukkan bahwa file data berhasil dibaca.
+* **`Data Awal (5 baris pertama):`**: Menampilkan lima baris pertama data mentah, memperlihatkan kolom asli.
+* **`Informasi Data Awal:`**: Ringkasan struktur DataFrame: ada 1010 baris dan 8 kolom. Sebagian besar kolom bertipe `int64` (numerik), dan 'NAMA RUMAH' bertipe `object` (string). Tidak ada nilai yang hilang.
 * **`Bentuk DataFrame Awal: (1010, 8)`**: Mengkonfirmasi dimensi DataFrame: 1010 baris dan 8 kolom.
 
-### Statistik Deskriptif dan Visualisasi Awal
+### Statistik Deskriptif
 
-```
-Statistik Deskriptif Data Bersih: 
-           harga_rp  luas_tanah_m2  luas_bangunan_m2  kamar_tidur  kamar_mandi  garasi_mobil 
-count  1.010000e+03    1010.000000       1010.000000  1010.000000  1010.000000   1010.000000 
-mean   7.628987e+09     276.539604        237.432673     4.668317     3.607921      1.920792 
-std    7.340946e+09     177.864557        179.957604     1.572776     1.420066      1.510998 
-min    4.300000e+08      40.000000         25.000000     2.000000     1.000000      0.000000 
-25%    3.262500e+09     150.000000        130.000000     4.000000     3.000000      1.000000 
-50%    5.000000e+09     216.500000        165.000000     4.000000     3.000000      2.000000 
-75%    9.000000e+09     350.000000        290.000000     5.000000     4.000000      2.000000 
-max    6.500000e+10    1126.000000       1400.000000    10.000000    10.000000     10.000000 
-```
-**Penjelasan Output:**
-* **`Statistik Deskriptif Data Bersih:`**: Ringkasan statistik dasar untuk kolom-kolom numerik. Terlihat `harga_rp` memiliki rentang nilai yang sangat luas ($4.3 \times 10^8$ hingga $6.5 \times 10^{10}$) dengan standar deviasi yang tinggi ($7.3 \times 10^9$), menunjukkan variasi harga yang signifikan. Luas tanah rata-rata sekitar 276 m$^2$ dan luas bangunan rata-rata 237 m$^2$.
+Berikut adalah ringkasan statistik deskriptif untuk fitur-fitur numerik dalam dataset bersih:
+
+| Statistik | harga_rp (Miliar Rp) | luas_tanah_m2 | luas_bangunan_m2 | kamar_tidur | kamar_mandi | garasi_mobil |
+| :-------- | :------------------- | :------------ | :--------------- | :---------- | :---------- | :----------- |
+| **count** | 1010                 | 1010          | 1010             | 1010        | 1010        | 1010         |
+| **mean** | 7.63                 | 276.54        | 237.43           | 4.67        | 3.61        | 1.92         |
+| **std** | 7.34                 | 177.86        | 179.96           | 1.57        | 1.42        | 1.51         |
+| **min** | 0.43                 | 40.00         | 25.00            | 2.00        | 1.00        | 0.00         |
+| **25%** | 3.26                 | 150.00        | 130.00           | 4.00        | 3.00        | 1.00         |
+| **50%** | 5.00                 | 216.50        | 165.00           | 4.00        | 3.00        | 2.00         |
+| **75%** | 9.00                 | 350.00        | 290.00           | 5.00        | 4.00        | 2.00         |
+| **max** | 65.00                | 1126.00       | 1400.00          | 10.00       | 10.00       | 10.00        |
+
+**Penjelasan Output Statistik Deskriptif:**
+* Kolom `harga_rp` memiliki rentang nilai yang sangat luas ($4.3 \times 10^8$ hingga $6.5 \times 10^{10}$) dengan standar deviasi yang tinggi ($7.3 \times 10^9$), menunjukkan variasi harga yang signifikan.
+* Luas tanah rata-rata sekitar 276 m$^2$ dan luas bangunan rata-rata 237 m$^2$.
 
 **Visualisasi Distribusi Fitur Numerik dan Identifikasi Outlier:**
-![Distribusi Fitur Numerik dan Box Plot](Tangkapan_Layar_Distribusi_Fitur_Numerik.png)
+![Distribusi Fitur Numerik dan Box Plot](images/distribusi_fitur_numerik.png)
 **Penjelasan Gambar:**
 * **Histogram (atas):** Menunjukkan distribusi setiap fitur numerik. Terlihat `harga_rp`, `luas_tanah_m2`, dan `luas_bangunan_m2` cenderung memiliki distribusi yang miring ke kanan (positively skewed), mengindikasikan keberadaan beberapa nilai ekstrem (harga/luas yang sangat tinggi).
 * **Box Plot (bawah):** Digunakan untuk mengidentifikasi *outlier*. Titik-titik di luar "jangkauan kumis" menunjukkan *outlier*. Terlihat jelas adanya *outlier* pada `harga_rp` dan `luas_bangunan_m2`, yang mengkonfirmasi adanya properti dengan harga atau luas yang sangat berbeda dari mayoritas data.
 
 ### Heatmap Korelasi Antar Fitur
 
-![Heatmap Korelasi Antar Fitur](Tangkapan_Layar_Heatmap_Korelasi.png)
+![Heatmap Korelasi Antar Fitur](images/heatmap_korelasi.png)
 **Penjelasan Gambar:**
 * Heatmap ini menunjukkan koefisien korelasi Pearson antara setiap pasangan fitur. Warna merah/oranye menunjukkan korelasi positif yang kuat, biru menunjukkan korelasi negatif, dan putih/abu-abu menunjukkan korelasi lemah.
 * `harga_juta` (variabel target) memiliki korelasi positif yang sangat kuat dengan `luas_bangunan_m2` (0.81) dan `luas_tanah_m2` (0.75), menunjukkan bahwa kedua fitur ini adalah prediktor harga yang paling dominan.
@@ -341,75 +359,77 @@ Pada bagian ini, metrik evaluasi yang digunakan untuk mengukur kinerja model XGB
 
 **Hasil Proyek Berdasarkan Metrik Evaluasi:**
 
-```
---- Evaluasi Model pada Data Training --- 
-Evaluasi pada Training Set: 
-R2 Score: 0.9492 
-MAE: 858.7464 (juta Rp) 
-MSE: 2825151.1453 
-RMSE: 1680.8186 (juta Rp) 
+Berikut adalah perbandingan metrik evaluasi model pada data *training* dan *testing*:
 
---- Evaluasi Model pada Data Testing --- 
-Evaluasi pada Testing Set: 
-R2 Score: 0.7612 
-MAE: 1921.5205 (juta Rp) 
-MSE: 11148025.6712 
-RMSE: 3338.8659 (juta Rp) 
-```
-**Penjelasan Output:**
-* **`Evaluasi pada Training Set:`**:
-    * `R2 Score: 0.9492`: Model sangat baik dalam menjelaskan variabilitas harga pada data pelatihan (hampir 95%).
-    * `MAE: 858.7464 (juta Rp)`: Rata-rata kesalahan absolut pada data pelatihan sekitar 858 juta Rupiah.
-    * `RMSE: 1680.8186 (juta Rp)`: Kesalahan rata-rata (dalam satuan target) pada data pelatihan sekitar 1.68 miliar Rupiah.
-* **`Evaluasi pada Testing Set:`**:
-    * `R2 Score: 0.7612`: Kinerja model pada data pengujian menurun menjadi 76.12%, menunjukkan sedikit *overfitting* tetapi masih menunjukkan kemampuan prediksi yang baik pada data baru.
-    * `MAE: 1921.5205 (juta Rp)`: Rata-rata kesalahan absolut pada data pengujian meningkat menjadi sekitar 1.92 miliar Rupiah.
-    * `RMSE: 3338.8659 (juta Rp)`: Kesalahan rata-rata pada data pengujian sekitar 3.34 miliar Rupiah.
+| Metrik      | Training Set      | Testing Set       |
+| :---------- | :---------------- | :---------------- |
+| **R2 Score** | 0.9492            | 0.7612            |
+| **MAE** | 858.7464 (juta Rp) | 1921.5205 (juta Rp) |
+| **MSE** | 2825151.1453      | 11148025.6712     |
+| **RMSE** | 1680.8186 (juta Rp) | 3338.8659 (juta Rp) |
+
+**Penjelasan Hasil Evaluasi:**
+* **`Evaluasi pada Training Set:`**: Model sangat baik dalam menjelaskan variabilitas harga pada data pelatihan (hampir 95%). Rata-rata kesalahan absolut (MAE) sekitar 858 juta Rupiah, dan RMSE sekitar 1.68 miliar Rupiah.
+* **`Evaluasi pada Testing Set:`**: Kinerja model pada data pengujian menurun menjadi 76.12% untuk R2 Score, menunjukkan sedikit *overfitting* tetapi masih menunjukkan kemampuan prediksi yang baik pada data baru. MAE meningkat menjadi sekitar 1.92 miliar Rupiah, dan RMSE menjadi sekitar 3.34 miliar Rupiah.
 
 **Visualisasi Evaluasi Model Tambahan:**
 
-![Harga Aktual vs. Prediksi dan Distribusi Residual](Tangkapan_Layar_Evaluasi_Model.png)
+![Harga Aktual vs. Prediksi dan Distribusi Residual](images/evaluasi_model.png)
 **Penjelasan Gambar:**
 * **Plot Scatter Harga Aktual vs. Prediksi (atas):** Menunjukkan bagaimana prediksi model (*y*-axis) dibandingkan dengan harga aktual (*x*-axis) pada data pengujian. Garis putus-putus hitam adalah "garis ideal" ($y=x$). Titik-titik yang dekat dengan garis menunjukkan prediksi yang akurat. Terlihat sebagian besar titik mengumpul di sekitar garis, namun ada penyimpangan lebih besar pada harga yang lebih tinggi.
 * **Distribusi Residual (bawah):** Histogram dari residual (harga aktual - prediksi). Idealnya, ini harus terdistribusi normal di sekitar nol. Rata-rata residual adalah -117.15 juta Rp (sangat dekat dengan nol), menunjukkan bias yang sangat kecil. Namun, adanya "ekor" di sisi kanan menunjukkan ada beberapa kasus *underprediction* yang signifikan.
 
 ### Pentingnya Fitur (Feature Importance)
 
-![Pentingnya Fitur Model XGBoost Terbaik](Tangkapan_Layar_Pentingnya_Fitur.png)
+Berikut adalah nilai *feature importance* dari model XGBoost terbaik:
+
+| Fitur                 | Skor Kepentingan |
+| :-------------------- | :--------------- |
+| `luas_bangunan_m2`    | 0.372223         |
+| `luas_tanah_m2`       | 0.286692         |
+| `kamar_mandi`         | 0.125585         |
+| `garasi_mobil`        | 0.082717         |
+| `kamar_tidur`         | 0.070624         |
+| `kategori_luas_tanah` | 0.062159         |
+
+![Pentingnya Fitur Model XGBoost Terbaik](images/pentingnya_fitur.png)
 **Penjelasan Gambar:**
 * **Bar Plot Horizontal:** Menampilkan skor kepentingan setiap fitur, diurutkan dari yang paling penting.
-* **`luas_bangunan_m2`** (0.372223) adalah fitur paling penting, menegaskan bahwa luas bangunan adalah faktor utama yang memengaruhi harga rumah.
-* **`luas_tanah_m2`** (0.286692) adalah fitur kedua paling penting.
+* `luas_bangunan_m2` (0.372223) adalah fitur paling penting, menegaskan bahwa luas bangunan adalah faktor utama yang memengaruhi harga rumah.
+* `luas_tanah_m2` (0.286692) adalah fitur kedua paling penting.
 * Fitur-fitur lain seperti `kamar_mandi`, `garasi_mobil`, `kamar_tidur`, dan `kategori_luas_tanah` juga berkontribusi pada model, meskipun dengan bobot yang lebih kecil.
 
 ### Contoh Hasil Prediksi pada Data Test
 
-```
-Contoh Hasil Prediksi pada Data Test (dengan selisih dan % error): 
-   harga_aktual_juta  harga_prediksi_juta  selisih_juta  persentase_error 
-0             8900.0          6574.722656   2325.277344         26.126712 
-1             6500.0          3540.587646   2959.412354         45.529421 
-2             6500.0         11873.118164  -5373.118164         82.663356 
-3            37000.0         24670.878906  12329.121094         33.321949 
-4            18500.0         19731.343750  -1231.343750          6.655912 
-5             8500.0          8324.935547    175.064453          2.059582 
-6             2150.0          2769.988281   -619.988281         28.836664 
-7             2250.0          3839.222412   -1589.222412         70.632107 
-8             4000.0          3497.738770    502.261230         12.556531 
-9             3799.0          4121.686523   -322.686523          8.493986 
+Berikut adalah contoh beberapa hasil prediksi model pada data pengujian, beserta selisih dan persentase error:
 
-Statistik Deskriptif Persentase Error: 
-count      202.000000 
-mean        26.801405 
-std         27.029579 
-min          0.015771 
-25%          7.984930 
-50%         18.634450 
-75%         37.116607 
-max        180.526491 
-Name: persentase_error, dtype: float64 
-```
-**Penjelasan Output:**
+| harga_aktual_juta | harga_prediksi_juta | selisih_juta | persentase_error |
+| :---------------- | :------------------ | :----------- | :--------------- |
+| 8900.0            | 6574.72             | 2325.28      | 26.13%           |
+| 6500.0            | 3540.59             | 2959.41      | 45.53%           |
+| 6500.0            | 11873.12            | -5373.12     | 82.66%           |
+| 37000.0           | 24670.88            | 12329.12     | 33.32%           |
+| 18500.0           | 19731.34            | -1231.34     | 6.66%            |
+| 8500.0            | 8324.94             | 175.06       | 2.06%            |
+| 2150.0            | 2769.99             | -619.99      | 28.84%           |
+| 2250.0            | 3839.22             | -1589.22     | 70.63%           |
+| 4000.0            | 3497.74             | 502.26       | 12.56%           |
+| 3799.0            | 4121.69             | -322.69      | 8.49%            |
+
+**Statistik Deskriptif Persentase Error:**
+
+| Statistik | persentase_error |
+| :-------- | :--------------- |
+| **count** | 202.00           |
+| **mean** | 26.80%           |
+| **std** | 27.03%           |
+| **min** | 0.02%            |
+| **25%** | 7.98%            |
+| **50%** | 18.63%           |
+| **75%** | 37.12%           |
+| **max** | 180.53%          |
+
+**Penjelasan Output Contoh Prediksi:**
 * **`Contoh Hasil Prediksi pada Data Test`**: Menampilkan beberapa baris dari data pengujian dengan harga aktual, prediksi, selisih, dan persentase error. Ini memberikan gambaran langsung tentang seberapa akurat prediksi model untuk sampel individu. Terlihat variasi persentase error yang cukup besar.
 * **`Statistik Deskriptif Persentase Error`**:
     * `mean`: Rata-rata persentase error adalah sekitar 26.80%, menunjukkan bahwa rata-rata prediksi model menyimpang sekitar 26.8% dari harga aktual.
