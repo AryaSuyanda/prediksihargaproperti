@@ -294,3 +294,138 @@ Untuk mendapatkan model XGBoost terbaik, kami melakukan penyetelan *hyperparamet
 
 **Output (dari code Python):**
 
+Memulai Penyetelan Hiperparameter XGBoost dengan GridSearchCV...
+Fitting 3 folds for each of 243 candidates, totalling 729 fits
+[0] validation_0-rmse:7025.23249
+... (banyak baris output yang menunjukkan proses training model) ...
+[99] validation_0-rmse:3188.37273
+
+Parameter Terbaik Ditemukan: {'colsample_bytree': 0.7, 'learning_rate': 0.05, 'max_depth': 7, 'n_estimators': 100, 'subsample': 1.0}
+Skor CV (Negative MSE) Terbaik: -15902225.5805
+
+**Penjelasan Output:**
+* **`Memulai Penyetelan Hiperparameter XGBoost dengan GridSearchCV...`**: Menunjukkan dimulainya proses pencarian *hyperparameter* optimal.
+* **`Fitting 3 folds for each of 243 candidates, totalling 729 fits`**: GridSearchCV mencoba 243 kombinasi *hyperparameter* dan melakukan 3 *cross-validation* untuk setiap kombinasi, menghasilkan total 729 proses pelatihan model.
+* **`[0] validation_0-rmse:...` hingga `[99] validation_0-rmse:...`**: Ini adalah log pelatihan dari XGBoost. `validation_0-rmse` menunjukkan Root Mean Squared Error pada set validasi setelah setiap pohon keputusan ditambahkan. Nilai ini menurun seiring berjalannya pelatihan, menunjukkan bahwa model sedang belajar dan meningkatkan kinerjanya.
+* **`Parameter Terbaik Ditemukan: {...}`**: Setelah semua kombinasi diuji, ini adalah set *hyperparameter* yang memberikan kinerja terbaik (MSE terendah) pada validasi silang. Parameter-parameter ini akan digunakan untuk model akhir.
+* **`Skor CV (Negative MSE) Terbaik: -15902225.5805`**: Ini adalah skor validasi silang terbaik yang dicapai dengan *hyperparameter* optimal.
+
+## Evaluation
+
+Pada bagian ini, metrik evaluasi yang digunakan untuk mengukur kinerja model XGBoost adalah `R2 Score`, `Mean Absolute Error (MAE)`, `Mean Squared Error (MSE)`, dan `Root Mean Squared Error (RMSE)`. Metrik-metrik ini sangat cocok untuk masalah regresi, di mana tujuannya adalah memprediksi nilai kontinu.
+
+**Metrik Evaluasi yang Digunakan:**
+
+1.  **R2 Score (Coefficient of Determination):**
+    * **Penjelasan:** R2 Score mengukur proporsi varians dalam variabel dependen yang dapat diprediksi dari variabel independen. Nilainya berkisar antara 0 hingga 1.
+    * **Formula:** $R^2 = 1 - \frac{\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}{\sum_{i=1}^{n}(y_i - \bar{y})^2}$
+        * $y_i$: nilai aktual
+        * $\hat{y}_i$: nilai prediksi
+        * $\bar{y}$: rata-rata nilai aktual
+    * **Bagaimana Bekerja:** Semakin dekat nilai R2 ke 1, semakin baik model dalam menjelaskan variabilitas data. R2 = 1 berarti model memprediksi dengan sempurna. R2 = 0 berarti model tidak lebih baik daripada memprediksi rata-rata target.
+
+2.  **Mean Absolute Error (MAE):**
+    * **Penjelasan:** MAE mengukur rata-rata dari selisih absolut antara nilai aktual dan nilai prediksi. Metrik ini memberikan gambaran tentang seberapa besar rata-rata "kesalahan" model dalam satuan target (juta Rupiah).
+    * **Formula:** $MAE = \frac{1}{n} \sum_{i=1}^{n}|y_i - \hat{y}_i|$
+    * **Bagaimana Bekerja:** Nilai MAE yang lebih rendah menunjukkan model yang lebih akurat. Karena menggunakan nilai absolut, MAE tidak memberikan informasi tentang arah kesalahan (apakah prediksi terlalu tinggi atau terlalu rendah).
+
+3.  **Mean Squared Error (MSE):**
+    * **Penjelasan:** MSE mengukur rata-rata dari kuadrat selisih antara nilai aktual dan nilai prediksi. Karena mengkuadratkan kesalahan, MSE memberikan bobot yang lebih besar pada kesalahan yang lebih besar (outlier).
+    * **Formula:** $MSE = \frac{1}{n} \sum_{i=1}^{n}(y_i - \hat{y}_i)^2$
+    * **Bagaimana Bekerja:** Nilai MSE yang lebih rendah menunjukkan model yang lebih akurat. Unit MSE adalah kuadrat dari unit target, sehingga sulit diinterpretasikan secara langsung.
+
+4.  **Root Mean Squared Error (RMSE):**
+    * **Penjelasan:** RMSE adalah akar kuadrat dari MSE. Ini adalah metrik yang paling sering digunakan dalam regresi karena memberikan ukuran kesalahan dalam satuan yang sama dengan variabel target (juta Rupiah), sehingga lebih mudah diinterpretasikan daripada MSE.
+    * **Formula:** $RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n}(y_i - \hat{y}_i)^2}$
+    * **Bagaimana Bekerja:** Nilai RMSE yang lebih rendah menunjukkan model yang lebih akurat. Seperti MAE, RMSE juga lebih sensitif terhadap *outlier* dibandingkan MAE karena adanya operasi kuadrat.
+
+**Hasil Proyek Berdasarkan Metrik Evaluasi:**
+
+Berikut adalah perbandingan metrik evaluasi model pada data *training* dan *testing*:
+
+| Metrik      | Training Set      | Testing Set       |
+| :---------- | :---------------- | :---------------- |
+| **R2 Score** | 0.9492            | 0.7612            |
+| **MAE** | 858.7464 (juta Rp) | 1921.5205 (juta Rp) |
+| **MSE** | 2825151.1453      | 11148025.6712     |
+| **RMSE** | 1680.8186 (juta Rp) | 3338.8659 (juta Rp) |
+
+**Penjelasan Hasil Evaluasi:**
+* **`Evaluasi pada Training Set:`**: Model sangat baik dalam menjelaskan variabilitas harga pada data pelatihan (hampir 95%). Rata-rata kesalahan absolut (MAE) sekitar 858 juta Rupiah, dan RMSE sekitar 1.68 miliar Rupiah.
+* **`Evaluasi pada Testing Set:`**: Kinerja model pada data pengujian menurun menjadi 76.12% untuk R2 Score, menunjukkan sedikit *overfitting* tetapi masih menunjukkan kemampuan prediksi yang baik pada data baru. MAE meningkat menjadi sekitar 1.92 miliar Rupiah, dan RMSE menjadi sekitar 3.34 miliar Rupiah.
+
+**Visualisasi Evaluasi Model Tambahan:**
+
+![Harga Aktual vs. Prediksi dan Distribusi Residual](images/evaluasi_model.png)
+**Penjelasan Gambar:**
+* **Plot Scatter Harga Aktual vs. Prediksi (atas):** Menunjukkan bagaimana prediksi model (*y*-axis) dibandingkan dengan harga aktual (*x*-axis) pada data pengujian. Garis putus-putus hitam adalah "garis ideal" ($y=x$). Titik-titik yang dekat dengan garis menunjukkan prediksi yang akurat. Terlihat sebagian besar titik mengumpul di sekitar garis, namun ada penyimpangan lebih besar pada harga yang lebih tinggi.
+* **Distribusi Residual (bawah):** Histogram dari residual (harga aktual - prediksi). Idealnya, ini harus terdistribusi normal di sekitar nol. Rata-rata residual adalah -117.15 juta Rp (sangat dekat dengan nol), menunjukkan bias yang sangat kecil. Namun, adanya "ekor" di sisi kanan menunjukkan ada beberapa kasus *underprediction* yang signifikan.
+
+### Pentingnya Fitur (Feature Importance)
+
+Berikut adalah nilai *feature importance* dari model XGBoost terbaik:
+
+| Fitur                 | Skor Kepentingan |
+| :-------------------- | :--------------- |
+| `luas_bangunan_m2`    | 0.372223         |
+| `luas_tanah_m2`       | 0.286692         |
+| `kamar_mandi`         | 0.125585         |
+| `garasi_mobil`        | 0.082717         |
+| `kamar_tidur`         | 0.070624         |
+| `kategori_luas_tanah` | 0.062159         |
+
+![Pentingnya Fitur Model XGBoost Terbaik](images/pentingnya_fitur.png)
+**Penjelasan Gambar:**
+* **Bar Plot Horizontal:** Menampilkan skor kepentingan setiap fitur, diurutkan dari yang paling penting.
+* `luas_bangunan_m2` (0.372223) adalah fitur paling penting, menegaskan bahwa luas bangunan adalah faktor utama yang memengaruhi harga rumah.
+* `luas_tanah_m2` (0.286692) adalah fitur kedua paling penting.
+* Fitur-fitur lain seperti `kamar_mandi`, `garasi_mobil`, `kamar_tidur`, dan `kategori_luas_tanah` juga berkontribusi pada model, meskipun dengan bobot yang lebih kecil.
+
+### Contoh Hasil Prediksi pada Data Test
+
+Berikut adalah contoh beberapa hasil prediksi model pada data pengujian, beserta selisih dan persentase error:
+
+| harga_aktual_juta | harga_prediksi_juta | selisih_juta | persentase_error |
+| :---------------- | :------------------ | :----------- | :--------------- |
+| 8900.0            | 6574.72             | 2325.28      | 26.13%           |
+| 6500.0            | 3540.59             | 2959.41      | 45.53%           |
+| 6500.0            | 11873.12            | -5373.12     | 82.66%           |
+| 37000.0           | 24670.88            | 12329.12     | 33.32%           |
+| 18500.0           | 19731.34            | -1231.34     | 6.66%            |
+| 8500.0            | 8324.94             | 175.06       | 2.06%            |
+| 2150.0            | 2769.99             | -619.99      | 28.84%           |
+| 2250.0            | 3839.22             | -1589.22     | 70.63%           |
+| 4000.0            | 3497.74             | 502.26       | 12.56%           |
+| 3799.0            | 4121.69             | -322.69      | 8.49%            |
+
+**Statistik Deskriptif Persentase Error:**
+
+| Statistik | persentase_error |
+| :-------- | :--------------- |
+| **count** | 202.00           |
+| **mean** | 26.80%           |
+| **std** | 27.03%           |
+| **min** | 0.02%            |
+| **25%** | 7.98%            |
+| **50%** | 18.63%           |
+| **75%** | 37.12%           |
+| **max** | 180.53%          |
+
+**Penjelasan Output Contoh Prediksi:**
+* **`Contoh Hasil Prediksi pada Data Test`**: Menampilkan beberapa baris dari data pengujian dengan harga aktual, prediksi, selisih, dan persentase error. Ini memberikan gambaran langsung tentang seberapa akurat prediksi model untuk sampel individu. Terlihat variasi persentase error yang cukup besar.
+* **`Statistik Deskriptif Persentase Error`**:
+    * `mean`: Rata-rata persentase error adalah sekitar 26.80%, menunjukkan bahwa rata-rata prediksi model menyimpang sekitar 26.8% dari harga aktual.
+    * `std`: Standar deviasi yang tinggi (27.03%) mengindikasikan variasi yang besar dalam akurasi prediksi.
+    * `min` dan `max`: Rentang error dari 0.01% hingga 180.52% menunjukkan bahwa ada beberapa prediksi yang sangat akurat dan beberapa yang sangat jauh dari aktual.
+
+**Kesimpulan Evaluasi:**
+Model XGBoost yang telah disetel *hyperparameter*-nya menunjukkan kinerja yang solid dalam memprediksi harga properti, dengan `R2 Score` sebesar 0.76 pada data pengujian. Meskipun ada indikasi *overfitting* ringan (penurunan kinerja dari training ke testing set) dan tantangan dalam memprediksi harga ekstrem (yang terlihat dari *outlier* pada distribusi residual dan persentase error maksimum yang tinggi), model ini menyediakan estimasi harga yang cukup akurat dan memberikan wawasan penting tentang fitur-fitur yang paling berpengaruh. MAE sebesar 1.92 miliar Rupiah dan RMSE sebesar 3.34 miliar Rupiah menunjukkan rata-rata kesalahan prediksi dalam skala harga aktual.
+
+## Referensi
+
+* Chen, T., & Guestrin, C. (2016). XGBoost: A Scalable Tree Boosting System. *Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*, 785–794. doi:10.1145/2939672.2939785
+* Géron, A. (2019). *Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow: Concepts, Tools, and Techniques to Build Intelligent Systems* (2nd ed.). O'Reilly Media.
+* Scikit-learn developers. (n.d.). *scikit-learn: Machine Learning in Python*. Retrieved from https://scikit-learn.org/stable/
+* Seaborn developers. (n.d.). *seaborn: statistical data visualization*. Retrieved from https://seaborn.pydata.org/
+* Python Software Foundation. (n.d.). *Python Language Reference*. Retrieved from https://docs.python.org/3/reference/
+
