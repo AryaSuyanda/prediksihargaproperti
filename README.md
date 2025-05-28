@@ -86,14 +86,16 @@ Berikut adalah ringkasan statistik deskriptif untuk fitur-fitur numerik dalam da
 * Luas tanah rata-rata sekitar 276 m$^2$ dan luas bangunan rata-rata 237 m$^2$.
 
 **Visualisasi Distribusi Fitur Numerik dan Identifikasi Outlier:**
-![Distribusi Fitur Numerik dan Box Plot](images/distribusi_fitur_numerik.png)
+![image](https://github.com/user-attachments/assets/c7fc4a05-e516-483e-8c4c-05d423e42005)
+
 **Penjelasan Gambar:**
 * **Histogram (atas):** Menunjukkan distribusi setiap fitur numerik. Terlihat `harga_rp`, `luas_tanah_m2`, dan `luas_bangunan_m2` cenderung memiliki distribusi yang miring ke kanan (positively skewed), mengindikasikan keberadaan beberapa nilai ekstrem (harga/luas yang sangat tinggi).
 * **Box Plot (bawah):** Digunakan untuk mengidentifikasi *outlier*. Titik-titik di luar "jangkauan kumis" menunjukkan *outlier*. Terlihat jelas adanya *outlier* pada `harga_rp` dan `luas_bangunan_m2`, yang mengkonfirmasi adanya properti dengan harga atau luas yang sangat berbeda dari mayoritas data.
 
 ### Heatmap Korelasi Antar Fitur
 
-![Heatmap Korelasi Antar Fitur](images/heatmap_korelasi.png)
+![image](https://github.com/user-attachments/assets/73b87545-11b8-4ee6-b296-12d2eddf65cb)
+
 **Penjelasan Gambar:**
 * Heatmap ini menunjukkan koefisien korelasi Pearson antara setiap pasangan fitur. Warna merah/oranye menunjukkan korelasi positif yang kuat, biru menunjukkan korelasi negatif, dan putih/abu-abu menunjukkan korelasi lemah.
 * `harga_juta` (variabel target) memiliki korelasi positif yang sangat kuat dengan `luas_bangunan_m2` (0.81) dan `luas_tanah_m2` (0.75), menunjukkan bahwa kedua fitur ini adalah prediktor harga yang paling dominan.
