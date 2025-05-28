@@ -356,7 +356,7 @@ Berikut adalah perbandingan metrik evaluasi model pada data *training* dan *test
 
 **Visualisasi Evaluasi Model Tambahan:**
 
-![Harga Aktual vs. Prediksi dan Distribusi Residual](images/evaluasi_model.png)
+![image](https://github.com/user-attachments/assets/e49b0b46-c9fd-4500-86f4-5743dee2886c)
 **Penjelasan Gambar:**
 * **Plot Scatter Harga Aktual vs. Prediksi (atas):** Menunjukkan bagaimana prediksi model (*y*-axis) dibandingkan dengan harga aktual (*x*-axis) pada data pengujian. Garis putus-putus hitam adalah "garis ideal" ($y=x$). Titik-titik yang dekat dengan garis menunjukkan prediksi yang akurat. Terlihat sebagian besar titik mengumpul di sekitar garis, namun ada penyimpangan lebih besar pada harga yang lebih tinggi.
 * **Distribusi Residual (bawah):** Histogram dari residual (harga aktual - prediksi). Idealnya, ini harus terdistribusi normal di sekitar nol. Rata-rata residual adalah -117.15 juta Rp (sangat dekat dengan nol), menunjukkan bias yang sangat kecil. Namun, adanya "ekor" di sisi kanan menunjukkan ada beberapa kasus *underprediction* yang signifikan.
@@ -374,7 +374,9 @@ Berikut adalah nilai *feature importance* dari model XGBoost terbaik:
 | `kamar_tidur`         | 0.070624         |
 | `kategori_luas_tanah` | 0.062159         |
 
-![Pentingnya Fitur Model XGBoost Terbaik](images/pentingnya_fitur.png)
+![image](https://github.com/user-attachments/assets/2ecc428c-f39f-4aa1-9c43-928d49456162)
+
+
 **Penjelasan Gambar:**
 * **Bar Plot Horizontal:** Menampilkan skor kepentingan setiap fitur, diurutkan dari yang paling penting.
 * `luas_bangunan_m2` (0.372223) adalah fitur paling penting, menegaskan bahwa luas bangunan adalah faktor utama yang memengaruhi harga rumah.
