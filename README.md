@@ -426,7 +426,7 @@ Model XGBoost yang telah disetel *hyperparameter*-nya menunjukkan kinerja yang s
 ## Referensi
 
 * Chen, T., & Guestrin, C. (2016). XGBoost: A Scalable Tree Boosting System. *Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*, 785–794. [https://doi.org/10.1145/2939672.2939785](https://doi.org/10.1145/2939672.2939785)
-* Géron, A. (2019). *Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow: Concepts, Tools, and Techniques to Build Intelligent Systems* (2nd ed.). O'Reilly Media.
+* Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., ... & Duchesnay, E. (2011). Scikit-learn: Machine Learning in Python. *Journal of Machine Learning Research*, 12, 2825-2830. [https://www.jmlr.org/papers/volume12/pedregosa11a/pedregosa11a.pdf](https://www.jmlr.org/papers/volume12/pedregosa11a/pedregosa11a.pdf)
 * Scikit-learn developers. (n.d.). *scikit-learn: Machine Learning in Python*. Retrieved from https://scikit-learn.org/stable/
 * Seaborn developers. (n.d.). *seaborn: statistical data visualization*. Retrieved from https://seaborn.pydata.org/
 * Python Software Foundation. (n.d.). *Python Language Reference*. Retrieved from https://docs.python.org/3/reference/
