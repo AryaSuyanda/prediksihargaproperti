@@ -44,7 +44,6 @@ Data yang digunakan dalam proyek ini terdiri dari dua bagian: data harga rumah d
 
 - [Kaggle: Real Estate Price Prediction](https://www.kaggle.com/datasets/shree1992/housedata)
 
-> **Catatan:** Hindari mencantumkan link Google Drive pribadi. Gunakan sumber terbuka yang dapat diakses publik.
 
 ### Variabel-variabel pada Dataset
 
