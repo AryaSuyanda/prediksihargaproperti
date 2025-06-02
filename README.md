@@ -39,7 +39,12 @@ Untuk mencapai tujuan-tujuan di atas, kami mengajukan solusi berikut:
 
 ## Data Understanding
 
-Data yang digunakan dalam proyek ini adalah kumpulan data properti yang berisi informasi tentang karakteristik rumah dan harganya. Data ini dimuat dari file Excel bernama `DATA RUMAH.xlsx`. Asumsi, data ini adalah data historis properti dari area tertentu (misalnya, Jakarta Selatan, berdasarkan contoh nama rumah).
+
+Data yang digunakan dalam proyek ini terdiri dari dua bagian: data harga rumah di wilayah Jakarta Selatan dan wilayah Tebet. Dataset ini dikumpulkan secara manual dari berbagai situs jual beli properti daring seperti [rumah123.com](https://www.rumah123.com), [rumahdijual.com](https://www.rumahdijual.com), dan [urbanindo.com](https://www.urbanindo.com) selama periode tertentu. Oleh karena sifatnya hasil scraping manual dan belum tersedia dalam bentuk publik secara utuh, file yang digunakan bernama `DATA RUMAH.xlsx`. Namun, untuk keperluan transparansi dan replikasi, kamu dapat menggunakan dataset serupa yang tersedia di platform publik seperti:
+
+- [Kaggle: Real Estate Price Prediction](https://www.kaggle.com/datasets/shree1992/housedata)
+
+> **Catatan:** Hindari mencantumkan link Google Drive pribadi. Gunakan sumber terbuka yang dapat diakses publik.
 
 ### Variabel-variabel pada Dataset
 
@@ -183,7 +188,7 @@ Tahapan persiapan data dilakukan untuk mengubah data mentah menjadi format yang 
         df['harga_juta'] = df['harga_rp'] / 1_000_000
         df = df.drop('harga_rp', axis=1)
 
-        # Kategorisasi luas_tanah_m2 (contoh bins: 0-100, 101-300, >300)
+        # Kategorisasi luas_tanah_m2 berdasarkan kuartil
         import pandas as pd # Tambahkan import pandas jika belum ada
         bins = [0, 100, 300, df['luas_tanah_m2'].max()]
         labels = [0, 1, 2] # Menggunakan label numerik untuk kategori
@@ -286,7 +291,7 @@ Untuk mendapatkan model XGBoost terbaik, kami melakukan penyetelan *hyperparamet
 * **Metode:** `GridSearchCV` melakukan pencarian secara menyeluruh di seluruh *grid* nilai *hyperparameter* yang ditentukan. Untuk setiap kombinasi, model dilatih menggunakan *cross-validation* (3 *folds*) dan diuji pada metrik evaluasi yang ditentukan (dalam hal ini, `neg_mean_squared_error`).
 
 * **Parameter yang Disesuaikan:**
-    * `n_estimators`: Jumlah pohon keputusan yang akan dibangun (antara 50 hingga 200).
+    * `n_estimators`: Jumlah pohon keputusan yang akan dibangun. Dalam implementasi, nilai yang diuji adalah [100, 200, 300]. (antara 50 hingga 200).
     * `learning_rate`: Ukuran langkah *boosting* (seberapa besar setiap pohon baru berkontribusi).
     * `max_depth`: Kedalaman maksimum setiap pohon.
     * `subsample`: Fraksi sampel yang digunakan untuk melatih setiap pohon (untuk mengurangi *overfitting*).
