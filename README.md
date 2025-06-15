@@ -44,7 +44,7 @@ Data yang digunakan dalam proyek ini terdiri dari dua bagian: data harga rumah d
 
 Dataset hasil scraping tersebut telah disimpan dalam file bernama DATA RUMAH.xlsx. Untuk keperluan transparansi, replikasi, dan verifikasi oleh pihak reviewer, dataset tersebut telah diunggah secara publik dan dapat diakses melalui tautan berikut:
 
-🔗 Akses Dataset di GitHub (Public)
+🔗 [(Public)](https://github.com/AryaSuyanda/prediksihargaproperti/blob/main/DATA%20RUMAH.xlsx)
 
 Dengan menyediakan akses publik ke dataset, pengguna lain atau evaluator dapat menelusuri sumber data yang digunakan dalam proyek ini secara langsung dan melakukan eksperimen ulang (reproducibility) dengan lebih mudah.
 
