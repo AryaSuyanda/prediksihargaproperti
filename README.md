@@ -40,10 +40,13 @@ Untuk mencapai tujuan-tujuan di atas, kami mengajukan solusi berikut:
 ## Data Understanding
 
 
-Data yang digunakan dalam proyek ini terdiri dari dua bagian: data harga rumah di wilayah Jakarta Selatan dan wilayah Tebet. Dataset ini dikumpulkan secara manual dari berbagai situs jual beli properti daring seperti [rumah123.com](https://www.rumah123.com), [rumahdijual.com](https://www.rumahdijual.com), dan [urbanindo.com](https://www.urbanindo.com) selama periode tertentu. Oleh karena sifatnya hasil scraping manual dan belum tersedia dalam bentuk publik secara utuh, file yang digunakan bernama `DATA RUMAH.xlsx`. Namun, untuk keperluan transparansi dan replikasi, kamu dapat menggunakan dataset serupa yang tersedia di platform publik seperti:
+Data yang digunakan dalam proyek ini terdiri dari dua bagian: data harga rumah di wilayah Jakarta Selatan dan wilayah Tebet. Dataset ini dikumpulkan secara manual dari berbagai situs jual beli properti daring seperti rumah123.com, rumahdijual.com, dan urbanindo.com selama periode tertentu.
 
-- [Kaggle: Real Estate Price Prediction](https://www.kaggle.com/datasets/shree1992/housedata)
+Dataset hasil scraping tersebut telah disimpan dalam file bernama DATA RUMAH.xlsx. Untuk keperluan transparansi, replikasi, dan verifikasi oleh pihak reviewer, dataset tersebut telah diunggah secara publik dan dapat diakses melalui tautan berikut:
 
+🔗 Akses Dataset di GitHub (Public)
+
+Dengan menyediakan akses publik ke dataset, pengguna lain atau evaluator dapat menelusuri sumber data yang digunakan dalam proyek ini secara langsung dan melakukan eksperimen ulang (reproducibility) dengan lebih mudah.
 
 ### Variabel-variabel pada Dataset
 
