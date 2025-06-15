@@ -124,15 +124,8 @@ Tahapan persiapan data dilakukan untuk mengubah data mentah menjadi format yang 
     * **Alasan:** Nama kolom asli (misalnya, 'LB', 'LT', 'GRS') seringkali tidak deskriptif atau konsisten. Mengubah nama kolom menjadi format yang lebih jelas dan konsisten (`luas_bangunan_m2`, `luas_tanah_m2`, `garasi_mobil`) meningkatkan keterbacaan kode dan pemahaman data.
 
     **Output (dari code Python):**
-    ```
-    Data setelah rename kolom (5 baris pertama): 
-       no                                      nama_properti    harga_rp  luas_tanah_m2  luas_bangunan_m2  kamar_tidur  kamar_mandi  garasi_mobil 
-    0   1  Rumah Murah Hook Tebet Timur, Tebet, Jakarta S...  3800000000            220               220            3            3             0 
-    1   2  Rumah Modern di Tebet dekat Stasiun, Tebet, Ja...  4600000000  180  137   4   3    2 
-    2   3  Rumah Mewah 2 Lantai Hanya 3 Menit Ke Tebet, T...  3000000000  267  250   4   4    4 
-    3   4           Rumah Baru Tebet, Tebet, Jakarta Selatan   430000000             40                25            2            2             0 
-    4   5  Rumah Bagus Tebet komp Gudang Peluru lt 350m, ...  9000000000  400  355   6   5    3 
-    ```
+    ![image](https://github.com/user-attachments/assets/a042b246-e7fb-48a8-ab04-2cdaebe56862)
+
 
 3.  **Menghapus Kolom yang Tidak Relevan:**
     * **Kode:**
@@ -143,15 +136,8 @@ Tahapan persiapan data dilakukan untuk mengubah data mentah menjadi format yang 
     * **Alasan:** Kolom `no` adalah *identifier* unik yang tidak memiliki nilai prediktif. Kolom `nama_properti` berisi teks bebas yang memerlukan *Natural Language Processing* (NLP) yang lebih kompleks untuk diekstrak fiturnya, dan untuk proyek ini, dianggap tidak relevan secara langsung sebagai fitur numerik. Menghapus kolom ini mengurangi dimensi data dan fokus pada fitur-fitur struktural properti.
 
     **Output (dari code Python):**
-    ```
-    Data setelah menghapus kolom 'no' dan 'nama_properti' (5 baris pertama): 
-         harga_rp  luas_tanah_m2  luas_bangunan_m2  kamar_tidur  kamar_mandi  garasi_mobil 
-    0  3800000000            220               220            3            3             0 
-    1  4600000000            180               137            4            3             2 
-    2  3000000000            267               250            4            4             4 
-    3   430000000             40                25            2            2             0 
-    4  9000000000            400               355            6            5             3 
-    ```
+    ![image](https://github.com/user-attachments/assets/49a72209-b1a5-4f91-853c-f04386d1b6fe)
+
 
 4.  **Penanganan Missing Value (Imputasi Median):**
     * **Kode:**
